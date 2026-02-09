@@ -228,7 +228,16 @@ def main() -> None:
     station_selection = st.sidebar.multiselect("Станция", stations, default=stations)
     boiler_types = collect_unique(flattened, "boiler_type")
     type_selection = st.sidebar.multiselect("Тип котла", boiler_types, default=boiler_types)
-    steel_types = sorted({row["steel"] for row in flattened if row.get("steel")})
+    steel_set: Set[str] = set()
+    for row in flattened:
+        steel_value = row.get("steel")
+        if isinstance(steel_value, (list, tuple)):
+            for piece in steel_value:
+                if piece:
+                    steel_set.add(str(piece))
+        elif steel_value:
+            steel_set.add(str(steel_value))
+    steel_types = sorted(steel_set)
     steel_selection = st.sidebar.multiselect("Марка стали", steel_types)
     categories = collect_unique(flattened, "category")
     category_selection = st.sidebar.multiselect("Категория", categories, default=categories)
