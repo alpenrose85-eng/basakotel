@@ -243,6 +243,15 @@ def main() -> None:
         else:
             st.info("Файл обработан, но новых поверхностей не добавлено")
 
+    st.subheader("Администрирование данных")
+    if st.button("Удалить текущую базу"):
+        if DATA_PATH.exists():
+            DATA_PATH.unlink()
+            data = {"boilers": []}
+            st.success("Файл `boilers_reference.json` удалён. Можешь загрузить новую базу через форму выше.")
+        else:
+            st.warning("Файл уже отсутствует")
+
     st.header("Исходные данные")
     with st.expander("Посмотреть JSON-структуру базы"):  # noqa: SIM101
         st.json(data)
