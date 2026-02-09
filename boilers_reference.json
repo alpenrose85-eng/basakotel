@@ -1,0 +1,613 @@
+{
+  "boilers": [
+    {
+      "id": "TP-108",
+      "name": "ТП-108 (двухкорпусный)",
+      "location": "Шатурская ГРЭС, энергоблок №1",
+      "notes": "Старые паспортные данные в кг/см², в JSON храним уже в МПа",
+      "surfaces": [
+        {
+          "name": "Пароперегреватель",
+          "steel": "12X18H12T",
+          "pressure": 3.1376,
+          "temperature": 565,
+          "outerDiameter": 32,
+          "wallThickness": 5
+        },
+        {
+          "name": "Конвективный перегреватель",
+          "steel": "12X18H12T",
+          "pressure": 3.1376,
+          "temperature": 579,
+          "outerDiameter": 32,
+          "wallThickness": 6
+        },
+        {
+          "name": "Экономайзер высокого давления",
+          "aliases": [
+            "ЭВД",
+            "ВЭК",
+            "economizer HD"
+          ],
+          "steel": "20",
+          "pressure": 15.69,
+          "temperature": 403,
+          "outerDiameter": 32,
+          "wallThickness": 4
+        },
+        {
+          "name": "Испарительные поверхности",
+          "aliases": [
+            "экраны",
+            "панели",
+            "левый боковой экран",
+            "правый боковой экран",
+            "задний экран",
+            "фронтовой экран",
+            "ЛБЭ",
+            "ЛЭ",
+            "ПБЭ",
+            "ПЭ",
+            "ЗЭ",
+            "ФЭ"
+          ],
+          "steel": "20",
+          "pressure": 15.2,
+          "temperature": 403,
+          "outerDiameter": 60,
+          "wallThickness": 6
+        },
+        {
+          "name": "Радиационный пароперегреватель",
+          "aliases": [
+            "радиационно-настенный пароперегреватель",
+            "РНПП"
+          ],
+          "steel": "12Х1МФ",
+          "pressure": 15.1,
+          "temperature": 577,
+          "outerDiameter": 38,
+          "wallThickness": 6
+        },
+        {
+          "name": "Потолочный пароперегреватель первой ступени",
+          "aliases": [
+            "ППП-1",
+            "ПП-1"
+          ],
+          "steel": "12Х1МФ",
+          "pressure": 14.61,
+          "temperature": 457,
+          "outerDiameter": 32,
+          "wallThickness": 4
+        },
+        {
+          "name": "1-й ход 1 ширма (входная часть ШПП-1)",
+          "aliases": [
+            "ШПП-1",
+            "входная часть ШПП-1"
+          ],
+          "steel": "12Х1МФ",
+          "pressure": 14.61,
+          "temperature": 559,
+          "outerDiameter": 32,
+          "wallThickness": 5
+        },
+        {
+          "name": "2-й ход 1 ширма (выходная часть ШПП-1)",
+          "aliases": [
+            "ШПП-1 выход",
+            "ширмовый пароперегреватель",
+            "ширмы"
+          ],
+          "steel": "12Х1МФ",
+          "pressure": 14.42,
+          "temperature": 575,
+          "outerDiameter": 32,
+          "wallThickness": 5
+        },
+        {
+          "name": "Ширмовый пароперегреватель второй ступени",
+          "aliases": [
+            "ШПП-2"
+          ],
+          "steel": "12Х1МФ",
+          "pressure": 14.12,
+          "temperature": 564,
+          "outerDiameter": 32,
+          "wallThickness": 5
+        },
+        {
+          "name": "Потолочный пароперегреватель второй ступени",
+          "aliases": [
+            "ППП-2"
+          ],
+          "steel": "12Х1МФ",
+          "pressure": 13.83,
+          "temperature": 565,
+          "outerDiameter": 32,
+          "wallThickness": 5
+        },
+        {
+          "name": "Конвективный пароперегреватель",
+          "aliases": [
+            "КПП",
+            "КПП ВД"
+          ],
+          "components": [
+            {
+              "description": "Первый ход змеевиков",
+              "steel": "12Х1МФ",
+              "outerDiameter": 32,
+              "wallThickness": 6,
+              "pressure": 13.73,
+              "temperature": 579
+            },
+            {
+              "description": "Основная часть змеевиков",
+              "steel": "12Х18Н12Т",
+              "outerDiameter": 32,
+              "wallThickness": 4,
+              "pressure": 13.83,
+              "temperature": 625
+            }
+          ]
+        },
+        {
+          "name": "Экономайзер низкого давления",
+          "aliases": [
+            "ЭНД"
+          ],
+          "steel": "20",
+          "pressure": 1.96,
+          "temperature": 211,
+          "outerDiameter": 32,
+          "wallThickness": 4
+        },
+        {
+          "name": "Входной пакет пароперегревателя низкого давления",
+          "aliases": [
+            "ВКПП-1",
+            "КПП НД-1",
+            "первая ступень конвективного пароперегревателя низкого давления"
+          ],
+          "steel": "12Х1МФ",
+          "pressure": 2.35,
+          "temperature": 587,
+          "outerDiameter": 42,
+          "wallThickness": 4
+        },
+        {
+          "name": "Выходной пакет пароперегревателя низкого давления",
+          "aliases": [
+            "ВКПП-2",
+            "КПП НД-2",
+            "вторая ступень конвективного пароперегревателя низкого давления"
+          ],
+          "steel": "12Х18Н12Т",
+          "pressure": 2.21,
+          "temperature": 632,
+          "outerDiameter": 42,
+          "wallThickness": 4
+        }
+      ]
+    },
+    {
+      "id": "TP-87-1",
+      "name": "ТП-87-1",
+      "location": "Ижевская ТЭЦ-2, энергоблок №3",
+      "surfaces": [
+        {
+          "name": "Экранные трубы",
+          "aliases": [
+            "экраны",
+            "панели",
+            "ЛБЭ",
+            "ЛЭ",
+            "ПБЭ",
+            "ПЭ",
+            "ЗЭ",
+            "ФЭ"
+          ],
+          "steel": "20",
+          "outerDiameter": 60,
+          "wallThickness": 6,
+          "pressure": 15.2,
+          "temperature": 403
+        },
+        {
+          "name": "Пароперегреватель первой ступени",
+          "aliases": [
+            "ПП-1"
+          ],
+          "steel": "20",
+          "outerDiameter": 38,
+          "wallThickness": 4,
+          "pressure": 15.0,
+          "temperature": 410
+        },
+        {
+          "name": "Пароперегреватель второй ступени",
+          "aliases": [
+            "ПП-2"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 5,
+          "pressure": 14.42,
+          "temperature": 560
+        },
+        {
+          "name": "Пароперегреватель третьей ступени",
+          "aliases": [
+            "ПП-3"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 5,
+          "pressure": 14.12
+        },
+        {
+          "name": "Пароперегреватель четвертой ступени",
+          "aliases": [
+            "ПП-4"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 6,
+          "pressure": 13.93,
+          "temperature": 580
+        },
+        {
+          "name": "Ширмовый пароперегреватель",
+          "aliases": [
+            "ШПП",
+            "ширма"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 4,
+          "pressure": 14.71,
+          "temperature": 480
+        },
+        {
+          "name": "Потолочный пароперегреватель",
+          "aliases": [
+            "ППП"
+          ],
+          "steel": "20",
+          "outerDiameter": 38,
+          "wallThickness": 4,
+          "pressure": 15.2,
+          "temperature": 415
+        },
+        {
+          "name": "Водяной экономайзер",
+          "aliases": [
+            "ВЭК",
+            "ВЭ"
+          ],
+          "steel": "20",
+          "outerDiameter": 25,
+          "wallThickness": 3.5,
+          "pressure": 15.69,
+          "temperature": 373
+        }
+      ]
+    },
+    {
+      "id": "P-67",
+      "name": "П-67 (двухкорпусный)",
+      "location": "Березовская ГРЭС, энергоблок №1",
+      "surfaces": [
+        {
+          "name": "Обрамляющие трубы ШПП-2",
+          "aliases": [
+            "ШПП-2"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 6,
+          "pressure": 27.61,
+          "temperature": 522,
+          "loadCondition": "100%",
+          "notes": "Параметры при 100% загрузке"
+        },
+        {
+          "name": "Обрамляющие трубы ШПП-2",
+          "aliases": [
+            "ШПП-2"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 6,
+          "pressure": 25.03,
+          "temperature": 536,
+          "loadCondition": "60%",
+          "notes": "Параметры при 60% загрузке"
+        },
+        {
+          "name": "Вторая труба ШПП-2",
+          "aliases": [
+            "ШПП-2"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 6,
+          "pressure": 27.61,
+          "temperature": 534,
+          "loadCondition": "100%"
+        },
+        {
+          "name": "Вторая труба ШПП-2",
+          "aliases": [
+            "ШПП-2"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 6,
+          "pressure": 25.03,
+          "temperature": 547,
+          "loadCondition": "60%"
+        },
+        {
+          "name": "Обрамляющие трубы ШПП-3",
+          "aliases": [
+            "ШПП-3"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 6,
+          "pressure": 27.61,
+          "temperature": 502,
+          "loadCondition": "100%"
+        },
+        {
+          "name": "Обрамляющие трубы ШПП-3",
+          "aliases": [
+            "ШПП-3"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 32,
+          "wallThickness": 6,
+          "pressure": 25.03,
+          "temperature": 500,
+          "loadCondition": "60%"
+        },
+        {
+          "name": "Вторая труба ШПП-3",
+          "aliases": [
+            "ШПП-3"
+          ],
+          "components": [
+            {
+              "description": "Марка 12Х18Н12Т",
+              "steel": "12Х18Н12Т",
+              "outerDiameter": 32,
+              "wallThickness": 5,
+              "pressure": 26.79,
+              "temperature": 564
+            },
+            {
+              "description": "Ножки",
+              "steel": "12Х1МФ",
+              "outerDiameter": 42,
+              "wallThickness": 10,
+              "pressure": 26.79,
+              "temperature": 543
+            }
+          ],
+          "loadCondition": "100%"
+        },
+        {
+          "name": "Вторая труба ШПП-3",
+          "aliases": [
+            "ШПП-3"
+          ],
+          "components": [
+            {
+              "description": "Марка 12Х18Н12Т",
+              "steel": "12Х18Н12Т",
+              "outerDiameter": 32,
+              "wallThickness": 5,
+              "pressure": 24.74,
+              "temperature": 584
+            },
+            {
+              "description": "Ножки",
+              "steel": "12Х1МФ",
+              "outerDiameter": 42,
+              "wallThickness": 10,
+              "pressure": 24.74,
+              "temperature": 567
+            }
+          ],
+          "loadCondition": "60%"
+        },
+        {
+          "name": "Вторая труба ШПП-3",
+          "aliases": [
+            "ШПП-3"
+          ],
+          "mode": "без ПВД",
+          "components": [
+            {
+              "description": "Марка 12Х18Н12Т",
+              "steel": "12Х18Н12Т",
+              "outerDiameter": 32,
+              "wallThickness": 5,
+              "pressure": 25.84,
+              "temperature": 585
+            },
+            {
+              "description": "Ножки",
+              "steel": "12Х1МФ",
+              "outerDiameter": 42,
+              "wallThickness": 10,
+              "pressure": 25.84,
+              "temperature": 561
+            }
+          ]
+        },
+        {
+          "name": "Конвективный пароперегреватель, отводящие трубы",
+          "aliases": [
+            "КПП",
+            "пароотводящие трубы"
+          ],
+          "steel": "12Х18Н12Т",
+          "outerDiameter": 36,
+          "wallThickness": 6.5,
+          "pressure": 26.37,
+          "temperature": 594,
+          "loadCondition": "100%"
+        },
+        {
+          "name": "Конвективный пароперегреватель, отводящие трубы",
+          "aliases": [
+            "КПП",
+            "пароотводящие трубы"
+          ],
+          "steel": "12Х18Н12Т",
+          "outerDiameter": 36,
+          "wallThickness": 6.5,
+          "pressure": 24.59,
+          "temperature": 571,
+          "loadCondition": "60%"
+        },
+        {
+          "name": "Нижний пакет КПП",
+          "aliases": [
+            "КПП"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 38,
+          "wallThickness": 7.5,
+          "pressure": 25.61,
+          "temperature": 536,
+          "loadCondition": "100%",
+          "mode": "без ПВД"
+        },
+        {
+          "name": "КПП, отводящие трубы",
+          "aliases": [
+            "КПП",
+            "пароотводящие трубы"
+          ],
+          "steel": "12Х18Н12Т",
+          "outerDiameter": 36,
+          "wallThickness": 6.5,
+          "pressure": 25.61,
+          "temperature": 587,
+          "loadCondition": "100%",
+          "mode": "без ПВД"
+        },
+        {
+          "name": "КПП, ножки",
+          "aliases": [
+            "КПП"
+          ],
+          "steel": "12Х1МФ",
+          "outerDiameter": 45,
+          "wallThickness": 11,
+          "pressure": 25.61,
+          "temperature": 571,
+          "loadCondition": "100%",
+          "mode": "без ПВД"
+        },
+        {
+          "name": "Вторичный ширмовый пароперегреватель",
+          "aliases": [
+            "ШВП"
+          ],
+          "components": [
+            {
+              "description": "Марка 12Х1МФ",
+              "steel": "12Х1МФ",
+              "outerDiameter": 57,
+              "wallThickness": 4,
+              "pressure": 3.83,
+              "temperature": 586
+            },
+            {
+              "description": "Марка 12Х18Н12Т",
+              "steel": "12Х18Н12Т",
+              "outerDiameter": 57,
+              "wallThickness": 4,
+              "pressure": 3.83,
+              "temperature": 620
+            },
+            {
+              "description": "Ножки 12Х18Н12Т",
+              "steel": "12Х18Н12Т",
+              "outerDiameter": 60,
+              "wallThickness": 5.5,
+              "pressure": 3.83,
+              "temperature": 585
+            }
+          ],
+          "loadCondition": "100%"
+        },
+        {
+          "name": "Вторичный ширмовый пароперегреватель",
+          "aliases": [
+            "ШВП"
+          ],
+          "components": [
+            {
+              "description": "Марка 12Х1МФ",
+              "steel": "12Х1МФ",
+              "outerDiameter": 57,
+              "wallThickness": 4,
+              "pressure": 2.33,
+              "temperature": 583
+            },
+            {
+              "description": "Марка 12Х18Н12Т",
+              "steel": "12Х18Н12Т",
+              "outerDiameter": 57,
+              "wallThickness": 4,
+              "pressure": 2.33,
+              "temperature": 615
+            }
+          ],
+          "loadCondition": "60%"
+        },
+        {
+          "name": "Вторичный конвективный пароперегреватель",
+          "aliases": [
+            "КВП"
+          ],
+          "components": [
+            {
+              "description": "Марка 12Х1МФ",
+              "steel": "12Х1МФ",
+              "outerDiameter": 57,
+              "wallThickness": 4,
+              "pressure": 3.93,
+              "temperature": 581
+            }
+          ],
+          "loadCondition": "100%"
+        },
+        {
+          "name": "Вторичный конвективный пароперегреватель",
+          "aliases": [
+            "КВП"
+          ],
+          "components": [
+            {
+              "description": "Марка 12Х1МФ",
+              "steel": "12Х1МФ",
+              "outerDiameter": 57,
+              "wallThickness": 4,
+              "pressure": 2.36,
+              "temperature": 556
+            }
+          ],
+          "loadCondition": "60%"
+        }
+      ]
+    }
+  ]
+}
