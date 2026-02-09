@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Set
 
 import pandas as pd
 import streamlit as st
@@ -9,6 +9,26 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 DATA_PATH = PROJECT_ROOT.parent / "baza_dannykh" / "boilers_reference.json"
 
 st.set_page_config(page_title="База котлов ТЭЦ", layout="wide")
+
+
+SURFACE_COLUMNS = [
+    "boiler_id",
+    "boiler_name",
+    "station",
+    "boiler_type",
+    "category",
+    "system",
+    "surface",
+    "surface_group",
+    "section",
+    "aliases",
+    "steel",
+    "pressure",
+    "temperature",
+    "outer_diameter",
+    "wall_thickness",
+    "notes",
+]
 
 
 def load_data() -> Dict:
@@ -24,25 +44,67 @@ def save_data(data: Dict) -> None:
         json.dump(data, handle, ensure_ascii=False, indent=2)
 
 
+def get_boiler_parameters(boiler: Dict) -> Dict:
+    params = boiler.get("parameters", {}) or {}
+    result = {
+        "steam_flow": params.get("steam_flow_tph")
+        or (params.get("steam", {}) or {}).get("power_tph"),
+        "superheated_pressure": params.get("superheated_pressure_mpa")
+        or params.get("superheated_pressure_kgf_cm2"),
+        "superheated_temp": params.get("superheated_temp"),
+        "secondary_pressure": (params.get("secondary_steam", {}) or {}).get("pressure_in_kgf_cm2"),
+        "secondary_temp": (params.get("secondary_steam", {}) or {}).get("temperature_out"),
+        "fuel": params.get("fuel"),
+        "notes": boiler.get("notes"),
+    }
+    return result
+
+
 def flatten_surfaces(data: Dict) -> List[Dict]:
     rows: List[Dict] = []
     for boiler in data.get("boilers", []):
+        boiler_info = {
+            "boiler_id": boiler.get("id"),
+            "boiler_name": boiler.get("name"),
+            "station": boiler.get("station"),
+            "boiler_type": boiler.get("boilerType"),
+        }
         for surface in boiler.get("surfaces", []):
-            row = {
-                "boiler_id": boiler.get("id"),
-                "boiler_name": boiler.get("name"),
-                "location": boiler.get("location"),
+            base_row = {
+                **boiler_info,
                 "surface": surface.get("name"),
+                "surface_group": surface.get("surface_group"),
+                "section": surface.get("section"),
                 "aliases": ", ".join(surface.get("aliases", [])) if surface.get("aliases") else "",
+                "category": surface.get("category"),
+                "system": surface.get("system"),
                 "steel": surface.get("steel"),
                 "pressure": surface.get("pressure"),
                 "temperature": surface.get("temperature"),
                 "outer_diameter": surface.get("outerDiameter"),
                 "wall_thickness": surface.get("wallThickness"),
                 "notes": surface.get("notes", ""),
-                "load_condition": surface.get("loadCondition", ""),
             }
-            rows.append(row)
+            components = surface.get("components", [])
+            if not components:
+                rows.append(base_row)
+            else:
+                for component in components:
+                    rows.append({
+                        **boiler_info,
+                        "surface": f"{surface.get('name')} — {component.get('description')}",
+                        "surface_group": surface.get("surface_group"),
+                        "section": component.get("section") or surface.get("section"),
+                        "aliases": ", ".join(surface.get("aliases", [])) if surface.get("aliases") else "",
+                        "category": surface.get("category"),
+                        "system": surface.get("system"),
+                        "steel": component.get("steel"),
+                        "pressure": component.get("pressure"),
+                        "temperature": component.get("temperature"),
+                        "outer_diameter": component.get("outerDiameter"),
+                        "wall_thickness": component.get("wallThickness"),
+                        "notes": component.get("notes", surface.get("notes", "")),
+                    })
     return rows
 
 
@@ -124,31 +186,122 @@ def build_surface_payload() -> Dict:
     }
 
 
+def collect_unique(data: List[Dict], key: str) -> List[str]:
+    values = {item[key] for item in data if item.get(key)}
+    return sorted(values)
+
+
+def build_boiler_table(data: Dict) -> List[Dict]:
+    rows = []
+    for boiler in data.get("boilers", []):
+        params = boiler.get("parameters", {}) or {}
+        row = {
+            "boiler_id": boiler.get("id"),
+            "boiler_name": boiler.get("name"),
+            "station": boiler.get("station"),
+            "boiler_type": boiler.get("boilerType"),
+            "steam_flow": params.get("steam_flow_tph")
+            or (params.get("steam", {}) or {}).get("power_tph"),
+            "superheated_pressure": params.get("superheated_pressure_mpa")
+            or params.get("superheated_pressure_kgf_cm2"),
+            "superheated_temp": params.get("superheated_temp"),
+            "secondary_pressure": (params.get("secondary_steam", {}) or {}).get("pressure_in_kgf_cm2"),
+            "secondary_temp": (params.get("secondary_steam", {}) or {}).get("temperature_out"),
+            "fuel": params.get("fuel"),
+            "notes": boiler.get("notes"),
+        }
+        rows.append(row)
+    return rows
+
+
 def main() -> None:
     st.title("База поверхностей нагрева")
     st.write(
-        "Эта панель использует базу в `work/baza_dannykh/boilers_reference.json`. Поиск по слову возвращает все совпадения по котлу, поверхности и материалу."
+        "Гибкий поиск: вводи станцию, тип котла, марку стали или любой текст — таблица адаптируется и показывает котлы, параметры и поверхности."
     )
 
     data = load_data()
-    total_boilers = len(data.get("boilers", []))
-    total_surfaces = len(flatten_surfaces(data))
-
-    st.metric("Всего котлов", total_boilers)
-    st.metric("Всего поверхностей", total_surfaces)
-
-    st.header("Поиск")
-    query = st.text_input("Найти по котлу/поверхности/марке стали", value="")
     flattened = flatten_surfaces(data)
-    if query:
-        matches = [row for row in flattened if match_query(row, query)]
-        st.success(f"Найдено {len(matches)} совпадений")
-    else:
-        matches = flattened
-    if matches:
-        st.dataframe(pd.DataFrame(matches).fillna(""))
-    else:
-        st.info("Совпадений ещё нет — добавьте первую поверхность")
+    boiler_table = build_boiler_table(data)
+
+    stations = collect_unique(flattened, "station")
+    station_selection = st.sidebar.multiselect("Станция", stations, default=stations)
+    boiler_types = collect_unique(flattened, "boiler_type")
+    type_selection = st.sidebar.multiselect("Тип котла", boiler_types, default=boiler_types)
+    steel_types = sorted({row["steel"] for row in flattened if row.get("steel")})
+    steel_selection = st.sidebar.multiselect("Марка стали", steel_types)
+    categories = collect_unique(flattened, "category")
+    category_selection = st.sidebar.multiselect("Категория", categories, default=categories)
+    systems = collect_unique(flattened, "system")
+    system_selection = st.sidebar.multiselect("Тракт", systems, default=systems)
+
+    query = st.sidebar.text_input("Свободный поиск", value="")
+
+    def row_matches(row: Dict) -> bool:
+        if station_selection and row.get("station") not in station_selection:
+            return False
+        if type_selection and row.get("boiler_type") not in type_selection:
+            return False
+        if steel_selection and row.get("steel") not in steel_selection:
+            return False
+        if category_selection and row.get("category") not in category_selection:
+            return False
+        if system_selection and row.get("system") not in system_selection:
+            return False
+        if query and not match_query(row, query):
+            return False
+        return True
+
+    filtered = [row for row in flattened if row_matches(row)]
+
+    st.sidebar.markdown("---")
+    st.sidebar.metric("Котлы в выборке", len({row["boiler_id"] for row in filtered}))
+    st.sidebar.metric("Поверхностей в выборке", len(filtered))
+
+    tabs = st.tabs(["Поверхности", "Котлы и станции", "Марки сталей"])
+
+    with tabs[0]:
+        if filtered:
+            st.dataframe(pd.DataFrame(filtered).fillna("").reindex(columns=SURFACE_COLUMNS))
+            csv = pd.DataFrame(filtered).to_csv(index=False).encode("utf-8")
+            st.download_button("Скачать выборку поверхностей (CSV)", csv, "surfaces.csv", "text/csv")
+        else:
+            st.info("Совпадений нет — расширьте фильтры или используйте свободный поиск")
+
+    with tabs[1]:
+        station_rows = []
+        for boiler in boiler_table:
+            if station_selection and boiler.get("station") not in station_selection:
+                continue
+            if type_selection and boiler.get("boiler_type") not in type_selection:
+                continue
+            station_rows.append(
+                {
+                    "station": boiler.get("station"),
+                    "boiler_id": boiler.get("boiler_id"),
+                    "boiler_type": boiler.get("boiler_type"),
+                    "steam_flow": boiler.get("steam_flow"),
+                    "superheated_pressure": boiler.get("superheated_pressure"),
+                    "superheated_temp": boiler.get("superheated_temp"),
+                    "fuel": boiler.get("fuel"),
+                    "notes": boiler.get("notes"),
+                }
+            )
+        if station_rows:
+            st.dataframe(pd.DataFrame(station_rows).fillna(""))
+        else:
+            st.info("По выбранным фильтрам нет котлов")
+
+    with tabs[2]:
+        steel_rows = []
+        for steel in steel_types:
+            count = sum(1 for row in flattened if row.get("steel") == steel)
+            boilers = sorted({row["boiler_id"] for row in flattened if row.get("steel") == steel})
+            steel_rows.append({"steel": steel, "count": count, "boilers": ", ".join(boilers)})
+        if steel_rows:
+            st.dataframe(pd.DataFrame(steel_rows))
+        else:
+            st.info("Не удалось собрать список марок стали")
 
     st.header("Добавление данных")
     boiler_options = [boiler.get("id") for boiler in data.get("boilers", []) if boiler.get("id")] or ["Новый котёл"]
@@ -202,6 +355,15 @@ def main() -> None:
             st.success(f"Импортировано {added} новых записей/поверхностей")
         else:
             st.info("Файл обработан, но новых поверхностей не добавлено")
+
+    st.subheader("Администрирование данных")
+    if st.button("Удалить текущую базу"):
+        if DATA_PATH.exists():
+            DATA_PATH.unlink()
+            data = {"boilers": []}
+            st.success("Файл `boilers_reference.json` удалён. Можешь загрузить новую базу через форму выше.")
+        else:
+            st.warning("Файл уже отсутствует")
 
     st.header("Исходные данные")
     with st.expander("Посмотреть JSON-структуру базы"):  # noqa: SIM101
