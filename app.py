@@ -34,6 +34,8 @@ def flatten_surfaces(data: Dict) -> List[Dict]:
                 "location": boiler.get("location"),
                 "surface": surface.get("name"),
                 "aliases": ", ".join(surface.get("aliases", [])) if surface.get("aliases") else "",
+                "category": surface.get("category"),
+                "system": surface.get("system"),
                 "steel": surface.get("steel"),
                 "pressure": surface.get("pressure"),
                 "temperature": surface.get("temperature"),
@@ -43,6 +45,23 @@ def flatten_surfaces(data: Dict) -> List[Dict]:
                 "load_condition": surface.get("loadCondition", ""),
             }
             rows.append(row)
+            for component in surface.get("components", []):
+                rows.append({
+                    "boiler_id": boiler.get("id"),
+                    "boiler_name": boiler.get("name"),
+                    "location": boiler.get("location"),
+                    "surface": f"{surface.get('name')} — {component.get('description')}",
+                    "aliases": ", ".join(surface.get("aliases", [])) if surface.get("aliases") else "",
+                    "category": surface.get("category"),
+                    "system": surface.get("system"),
+                    "steel": component.get("steel"),
+                    "pressure": component.get("pressure"),
+                    "temperature": component.get("temperature"),
+                    "outer_diameter": component.get("outerDiameter"),
+                    "wall_thickness": component.get("wallThickness"),
+                    "notes": component.get("notes", surface.get("notes", "")),
+                    "load_condition": component.get("loadCondition", surface.get("loadCondition", "")),
+                })
     return rows
 
 
@@ -146,7 +165,28 @@ def main() -> None:
     else:
         matches = flattened
     if matches:
-        st.dataframe(pd.DataFrame(matches).fillna(""))
+        st.dataframe(
+            pd.DataFrame(matches)
+            .fillna("")
+            .reindex(
+                columns=[
+                    "boiler_id",
+                    "boiler_name",
+                    "location",
+                    "category",
+                    "system",
+                    "surface",
+                    "aliases",
+                    "steel",
+                    "pressure",
+                    "temperature",
+                    "outer_diameter",
+                    "wall_thickness",
+                    "load_condition",
+                    "notes",
+                ]
+            )
+        )
     else:
         st.info("Совпадений ещё нет — добавьте первую поверхность")
 
